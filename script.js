@@ -1,12 +1,15 @@
 const desktopMenu = document.querySelector('.desktop-menu')
 const mobileMenu = document.querySelector('.mobile-menu')
-const shoppingCartItems = document.querySelector('.checkout-container')
+const shoppingCartContainer = document.querySelector('.checkout-container')
 const cardsContainer = document.querySelector('.cards-container')
 const asideDetailContainer = document.querySelector('.product-detail-container')
+const shoppingCartItems = document.querySelector('.shopping-cart-items')
+const shoppingCartCounter = document.querySelector('.shopping-cart-counter')
+const checkoutTotal = document.querySelector('.total')
 // Parent containers classes from HTML ↑↑↑
 
 // Variables used for DOM manipulating ↓↓↓
-let showItemsAndDetails, productDetailsList, productDetailContainer
+let showItemsAndDetails, showCartItems, productDetailsList, productDetailContainer, addToCartIcon, shoppingCounter = 0, currentTotal = 0
 
 class Products {
     constructor(name, price, image, altText) {
@@ -49,14 +52,41 @@ const productsInTheMainContainer = function () {
                                             <p>${product.name}</p>
                                         </div>
                                         <figure>
-                                            <img src="./icons/bt_add_to_cart.svg" alt="add-to-cart">
+                                            <img src="./icons/bt_add_to_cart.svg" alt="add-to-cart" class="add-to-cart">
                                         </figure>
                                     </div>
                                 </div>`
         cardsContainer.innerHTML += showItemsAndDetails
     })
 
+    addToCartIcon = document.querySelectorAll('.add-to-cart')
     productDetailsList = document.querySelectorAll('.PDetail')
+}
+
+// This function adds products to the shopping cart
+const addToShoppingCart = function () {
+    addToCartIcon.forEach((cartItems) => {
+        cartItems.addEventListener("click", (ci) => {
+            for (citems of productList) {
+                if (ci.target.parentElement.parentElement.children[0].children[1].textContent === citems.name) {
+                    showCartItems = `<div class="shopping-cart">
+                                        <figure>
+                                            <img src=${citems.image} alt=${citems.altText}>
+                                        </figure>
+                                        <p>${citems.name}</p>
+                                        <p>$${citems.price}</p>
+                                        <img src="./icons/icon_close.png" alt="close" class="close">
+                                    </div>`
+                    shoppingCounter++
+                    shoppingCartContainer.classList.remove('inactive')
+                    shoppingCartItems.innerHTML += showCartItems
+                    shoppingCartCounter.innerHTML = shoppingCounter
+                    currentTotal += citems.price
+                    checkoutTotal.innerHTML = `$${currentTotal}`
+                }
+            } 
+        })
+    })
 }
 
 // This function shows the product details
@@ -103,18 +133,18 @@ const closeProductDetails = function () {
 // These functions are used to open and close the menus from <nav> tag container ↓↓↓
 const displayDesktopMenu = function () {
     desktopMenu.classList.toggle('inactive')
-    shoppingCartItems.classList.add('inactive')     
+    shoppingCartContainer.classList.add('inactive')     
     productDetailContainer.classList.add('inactive')
 } 
 
 const displayMobileMenuIcon = function () {
     mobileMenu.classList.toggle('inactive')
-    shoppingCartItems.classList.add('inactive')
+    shoppingCartContainer.classList.add('inactive')
     productDetailContainer.classList.add('inactive')
 }
 
 const displayShoppingCart = function () {
-    shoppingCartItems.classList.toggle('inactive') 
+    shoppingCartContainer.classList.toggle('inactive') 
     mobileMenu.classList.add('inactive')
     desktopMenu.classList.add('inactive')
     productDetailContainer.classList.add('inactive')
@@ -123,4 +153,4 @@ const displayShoppingCart = function () {
 addToTheProductList(productsOnSale)
 productsInTheMainContainer()
 showProductDetails()
-
+addToShoppingCart()
