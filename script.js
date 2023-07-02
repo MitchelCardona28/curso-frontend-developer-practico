@@ -9,7 +9,7 @@ const checkoutTotal = document.querySelector('.total')
 // Parent containers classes from HTML ↑↑↑
 
 // Variables used for DOM manipulating ↓↓↓
-let showItemsAndDetails, showCartItems, productDetailsList, productDetailContainer, addToCartIcon, shoppingCounter = 0, currentTotal = 0
+let showItemsAndDetails, showCartItems, productDetailsList, productDetailContainer, /*openShoppingCartItems*/ addToCartIcon, shoppingCounter = 0, currentTotal = 0
 
 class Products {
     constructor(name, price, image, altText) {
@@ -69,14 +69,15 @@ const addToShoppingCart = function () {
         cartItems.addEventListener("click", (ci) => {
             for (citems of productList) {
                 if (ci.target.parentElement.parentElement.children[0].children[1].textContent === citems.name) {
-                    showCartItems = `<div class="shopping-cart">
+                    showCartItems = `<div class="shopping-cart"> // Try to change it to "display flex"
                                         <figure>
                                             <img src=${citems.image} alt=${citems.altText}>
                                         </figure>
                                         <p>${citems.name}</p>
                                         <p>$${citems.price}</p>
-                                        <img src="./icons/icon_close.png" alt="close" class="close">
+                                        <img src="./icons/icon_close.png" alt="close">
                                     </div>`
+                    
                     shoppingCounter++
                     shoppingCartContainer.classList.remove('inactive')
                     shoppingCartItems.innerHTML += showCartItems
@@ -118,7 +119,7 @@ const showProductDetails = function () {
                     
                     asideDetailContainer.innerHTML = showItemsAndDetails
                     productDetailContainer = document.querySelector('.product-detail')
-                    productDetailContainer.classList.remove('inactive')                
+                    productDetailContainer.classList.remove('inactive')              
                 }
             }
         })
@@ -129,6 +130,10 @@ const showProductDetails = function () {
 const closeProductDetails = function () {
     productDetailContainer.classList.add('inactive')
 }
+
+/* const closeShoppingCartItem = function () {
+    openShoppingCartItems.classList.add('inactive')
+ } */
 
 // These functions are used to open and close the menus from <nav> tag container ↓↓↓
 const displayDesktopMenu = function () {
@@ -154,3 +159,4 @@ addToTheProductList(productsOnSale)
 productsInTheMainContainer()
 showProductDetails()
 addToShoppingCart()
+
